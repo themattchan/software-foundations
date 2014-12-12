@@ -4,8 +4,6 @@ Software Foundations solutions
 Working through the exercises in Software Foundations. This stuff is cool. http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html
 
 Roughly following these suggested exercises: http://web.cecs.pdx.edu/~apt/coq_hints.html.
-(Formatted list copied from
-https://github.com/lkuper/software-foundations/blob/master/README.md)
 
 * [ ] Basics:
     * [x] factorial
