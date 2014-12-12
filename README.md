@@ -1,7 +1,7 @@
 Software Foundations solutions
 ==============================
 
-Working through the exercises in Software Foundations. This stuff is cool. http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html
+Reading and working through the exercises in Software Foundations. This stuff is cool. http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html
 
 Roughly following these suggested exercises: http://web.cecs.pdx.edu/~apt/coq_hints.html.
 
