@@ -1,9 +1,9 @@
 Software Foundations solutions
 ==============================
 
-Reading and working through the exercises in Software Foundations. This stuff is cool. http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html
+Reading and working through the exercises in [Software Foundations](http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html). This stuff is cool.
 
-Roughly following these suggested exercises: http://web.cecs.pdx.edu/~apt/coq_hints.html.
+Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_hints.html).
 
 * [ ] Basics:
     * [x] factorial
