@@ -911,7 +911,7 @@ Proof.
   reflexivity.                  (* false false *)
 Qed.
 
-  
+
 
 
 
@@ -954,20 +954,38 @@ Qed.
 (* FILL IN HERE *)
 Inductive bin : Type :=
 | O_bin : bin                   (* 0 *)
-| D     : bin                   (* "double" *)
-| DS    : bin.                  (* "double successor (double + 1)" *)
+| D     : bin -> bin            (* "double" *)
+| DS    : bin -> bin.           (* "double successor (double + 1)" *)
 
 Fixpoint bin_inc (n: bin) : bin :=
   match n with
-    | O_bin = DS O_bin
-    | D     = DS D
-    | DS    =
+    | O_bin => DS O_bin         (* 0 + 1 *)
+    | D  n' => DS n'            (* 2n + 1 *)
+    | DS n' => D (bin_inc n')   (* (2n + 1) + 1 = 2(n + 1) *)
   end.
-    
 
-            
+Eval compute in (bin_inc (D(D(D(O_bin))))).
 
-(** [] *)
+Fixpoint bin_to_un (n: bin) : nat :=
+  match n with
+    | O_bin => O
+    | D n'  => plus (bin_to_un n') (bin_to_un n')
+    | DS n'  => plus (S O)  (plus (bin_to_un n') (bin_to_un n'))
+  end.
+
+Example test_bin_1:
+  bin_to_un (bin_inc O_bin) = (bin_to_un O_bin) + 1.
+Proof. reflexivity. Qed.
+
+Example test_bin_2:
+  bin_to_un (D(D(D(O_bin)))) = 0.
+Proof. reflexivity. Qed.
+
+Example test_bin_3:
+  bin_to_un (DS(DS(DS(O_bin)))) = 7.
+Proof. reflexivity. Qed.
+
+         (** [] *)
 
 (* ###################################################################### *)
 (** * Optional Material *)
@@ -1034,5 +1052,14 @@ Fixpoint plus' (n : nat) (m : nat) : nat :=
 
 (* FILL IN HERE *)
 (** [] *)
-
+(*
+Fixpoint plus'' (n: nat) (m: nat) : nat :=
+  match n with
+    | O => m
+    | S n' => match m with
+                | O => S (plus'' n' m)
+                | S m' => S (plus'' n m')
+              end
+  end.
+*)
 (* $Date: 2013-12-03 07:45:41 -0500 (Tue, 03 Dec 2013) $ *)

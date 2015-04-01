@@ -5,14 +5,14 @@ Reading and working through the exercises in [Software Foundations](http://www.c
 
 Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_hints.html).
 
-* [ ] Basics:
+* [x] Basics:
     * [x] factorial
     * [x] plus_id_exercise
     * [x] zero_nbeq_plus_1
     * [x] boolean functions
     * [x] andb_eq_orb
-    * [ ] binary
-    * [ ] decreasing
+    * [x] binary
+    * [x] decreasing
 * [ ] Induction:
     * [ ] basic_induction
     * [ ] plus_comm

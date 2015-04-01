@@ -1,4 +1,4 @@
-DIGEST c1de08b87a45acb088cd281bb3f0288d
+DIGEST a1fed6ee18c50b4db7a768aac0627289
 FBasics
 def 469:473 <> admit
 R487:487 Basics <> T var
@@ -206,7 +206,7 @@ R13634:13634 Basics <> n var
 R13647:13647 Basics Playground1 O constr
 R13652:13652 Basics Playground1 O constr
 R13660:13660 Basics Playground1 S constr
-R13789:13799 Basics <> <> mod
+R13789:13799 Basics Playground1 <> mod
 def 13814:13821 <> minustwo
 R13828:13830 Coq.Init.Datatypes <> nat ind
 R13835:13837 Coq.Init.Datatypes <> nat ind
@@ -310,7 +310,7 @@ R16923:16923 Basics <> n var
 R16929:16929 Coq.Init.Datatypes <> S constr
 R16935:16935 Coq.Init.Datatypes <> S constr
 R16943:16947 Basics <> minus def
-R17198:17208 Basics <> <> mod
+R17198:17208 Basics Playground2 <> mod
 def 17221:17223 <> exp
 R17239:17241 Coq.Init.Datatypes <> nat ind
 R17246:17248 Coq.Init.Datatypes <> nat ind
@@ -600,10 +600,84 @@ R33075:33082 Basics <> andb_f_t thm
 R33075:33082 Basics <> andb_f_t thm
 R33103:33109 Basics <> orb_f_t thm
 R33103:33109 Basics <> orb_f_t thm
-ind 34838:34840 <> bin
-constr 34854:34858 <> O_bin
-constr 34894:34894 <> D
-constr 34941:34942 <> DS
-R34862:34864 Basics <> bin ind
-R34902:34904 Basics <> bin ind
-R34949:34951 Basics <> bin ind
+ind 34836:34838 <> bin
+constr 34852:34856 <> O_bin
+constr 34892:34892 <> D
+constr 34939:34940 <> DS
+R34860:34862 Basics <> bin ind
+R34907:34909 Basics <> bin ind
+R34900:34902 Basics <> bin ind
+R34954:34956 Basics <> bin ind
+R34947:34949 Basics <> bin ind
+def 35017:35023 <> bin_inc
+R35029:35031 Basics <> bin ind
+R35036:35038 Basics <> bin ind
+R35051:35051 Basics <> n var
+R35064:35068 Basics <> O_bin constr
+R35073:35074 Basics <> DS constr
+R35076:35080 Basics <> O_bin constr
+R35108:35108 Basics <> D constr
+R35117:35118 Basics <> DS constr
+R35153:35154 Basics <> DS constr
+R35162:35162 Basics <> D constr
+R35165:35171 Basics <> bin_inc def
+R35234:35240 Basics <> bin_inc def
+R35243:35243 Basics <> D constr
+R35245:35245 Basics <> D constr
+R35247:35247 Basics <> D constr
+R35249:35253 Basics <> O_bin constr
+def 35271:35279 <> bin_to_un
+R35285:35287 Basics <> bin ind
+R35292:35294 Coq.Init.Datatypes <> nat ind
+R35307:35307 Basics <> n var
+R35320:35324 Basics <> O_bin constr
+R35329:35329 Coq.Init.Datatypes <> O constr
+R35337:35337 Basics <> D constr
+R35346:35349 Coq.Init.Peano <> plus def
+R35367:35375 Basics <> bin_to_un def
+R35352:35360 Basics <> bin_to_un def
+R35387:35388 Basics <> DS constr
+R35397:35400 Coq.Init.Peano <> plus def
+R35410:35413 Coq.Init.Peano <> plus def
+R35431:35439 Basics <> bin_to_un def
+R35416:35424 Basics <> bin_to_un def
+R35403:35403 Coq.Init.Datatypes <> S constr
+R35405:35405 Coq.Init.Datatypes <> O constr
+def 35462:35471 <> test_bin_1
+R35501:35503 Coq.Init.Logic <> :type_scope:x_'='_x not
+R35476:35484 Basics <> bin_to_un def
+R35487:35493 Basics <> bin_inc def
+R35495:35499 Basics <> O_bin constr
+R35504:35504 Basics <> :nat_scope:x_'+'_x not
+R35520:35523 Basics <> :nat_scope:x_'+'_x not
+R35505:35513 Basics <> bin_to_un def
+R35515:35519 Basics <> O_bin constr
+def 35561:35570 <> test_bin_2
+R35601:35603 Coq.Init.Logic <> :type_scope:x_'='_x not
+R35575:35583 Basics <> bin_to_un def
+R35586:35586 Basics <> D constr
+R35588:35588 Basics <> D constr
+R35590:35590 Basics <> D constr
+R35592:35596 Basics <> O_bin constr
+def 35641:35650 <> test_bin_3
+R35684:35686 Coq.Init.Logic <> :type_scope:x_'='_x not
+R35655:35663 Basics <> bin_to_un def
+R35666:35667 Basics <> DS constr
+R35669:35670 Basics <> DS constr
+R35672:35673 Basics <> DS constr
+R35675:35679 Basics <> O_bin constr
+R35890:35893 Coq.Init.Peano <> plus def
+not 35878 <> :nat_scope:x_'+'_x
+R36014:36017 Coq.Init.Peano <> mult def
+not 36002 <> :nat_scope:x_'*'_x
+def 37414:37418 <> plus'
+R37425:37427 Coq.Init.Datatypes <> nat ind
+R37435:37437 Coq.Init.Datatypes <> nat ind
+R37442:37444 Coq.Init.Datatypes <> nat ind
+R37457:37457 Basics <> n var
+R37470:37470 Coq.Init.Datatypes <> O constr
+R37475:37475 Basics <> m var
+R37483:37483 Coq.Init.Datatypes <> S constr
+R37491:37491 Coq.Init.Datatypes <> S constr
+R37494:37498 Basics <> plus' def
+R37503:37503 Basics <> m var
