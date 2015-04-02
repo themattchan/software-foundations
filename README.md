@@ -13,16 +13,16 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] andb_eq_orb
     * [x] binary
     * [x] decreasing
-* [ ] Induction:
+* [x] Induction:
     * [x] basic_induction
     * [x] plus_comm
     * [x] mult_comm
     * [x] evenb_n__oddb_Sn
-    * [ ] binary_commute
-    * [ ] binary_inverse
+    * [x] binary_commute
+    * [x] binary_inverse
 * [ ] Lists:
-    * [ ] bag_functions
-    * [ ] bag_theorem
+    * [x] bag_functions
+    * [x] bag_theorem
     * [ ] list_exercises
     * [ ] list_design
     * [ ] bag_count_sum

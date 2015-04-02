@@ -65,13 +65,13 @@ Definition admit {T: Type} : T.  Admitted.
     a new set of data values -- a _type_. *)
 
 Inductive day : Type :=
-  | monday : day
-  | tuesday : day
+  | monday    : day
+  | tuesday   : day
   | wednesday : day
-  | thursday : day
-  | friday : day
-  | saturday : day
-  | sunday : day.
+  | thursday  : day
+  | friday    : day
+  | saturday  : day
+  | sunday    : day.
 
 (** The type is called [day], and its members are [monday],
     [tuesday], etc.  The second through eighth lines of the definition
@@ -159,8 +159,8 @@ Proof. simpl. reflexivity.  Qed.
     with members [true] and [false]. *)
 
 Inductive bool : Type :=
-  | true : bool
-  | false : bool.
+   | true  : bool
+   | false : bool.
 
 (** Although we are rolling our own booleans here for the sake
     of building up everything from scratch, Coq does, of course,
@@ -176,19 +176,19 @@ Inductive bool : Type :=
 
 Definition negb (b:bool) : bool :=
   match b with
-  | true => false
+  | true  => false
   | false => true
   end.
 
 Definition andb (b1:bool) (b2:bool) : bool :=
   match b1 with
-  | true => b2
+  | true  => b2
   | false => false
   end.
 
 Definition orb (b1:bool) (b2:bool) : bool :=
   match b1 with
-  | true => true
+  | true  => true
   | false => b2
   end.
 
@@ -232,7 +232,7 @@ Proof. reflexivity.  Qed.
 
 Definition nandb (b1:bool) (b2:bool) : bool :=
   match b1 with
-    | true => negb b2
+    | true  => negb b2
     | false => true
   end.
 
@@ -252,7 +252,7 @@ Proof. reflexivity. Qed.
 
 Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool :=
   match b1 with
-    | true => andb b2 b3
+    | true  => andb b2 b3
     | false => false
   end.
 
@@ -353,7 +353,7 @@ Inductive nat : Type :=
 
 Definition pred (n : nat) : nat :=
   match n with
-    | O => O
+    | O    => O
     | S n' => n'
   end.
 
@@ -364,8 +364,8 @@ End Playground1.
 
 Definition minustwo (n : nat) : nat :=
   match n with
-    | O => O
-    | S O => O
+    | O        => O
+    | S O      => O
     | S (S n') => n'
   end.
 
@@ -421,7 +421,7 @@ Module Playground2.
 
 Fixpoint plus (n : nat) (m : nat) : nat :=
   match n with
-    | O => m
+    | O    => m
     | S n' => S (plus n' m)
   end.
 
@@ -446,7 +446,7 @@ Eval compute in (plus (S (S (S O))) (S (S O))).
 
 Fixpoint mult (n m : nat) : nat :=
   match n with
-    | O => O
+    | O    => O
     | S n' => plus m (mult n' m)
   end.
 
@@ -472,7 +472,7 @@ End Playground2.
 
 Fixpoint exp (base power : nat) : nat :=
   match power with
-    | O => S O
+    | O   => S O
     | S p => mult base (exp base p)
   end.
 
@@ -486,7 +486,7 @@ Fixpoint exp (base power : nat) : nat :=
 
 Fixpoint factorial (n:nat) : nat :=
   match n with
-    | O => S O
+    | O    => S O
     | S n' => mult n (factorial n')
   end.
     (* admit. *)
@@ -535,11 +535,11 @@ Check ((0 + 1) + 1).
 Fixpoint beq_nat (n m : nat) : bool :=
   match n with
   | O => match m with
-         | O => true
+         | O    => true
          | S m' => false
          end
   | S n' => match m with
-            | O => false
+            | O    => false
             | S m' => beq_nat n' m'
             end
   end.
@@ -549,10 +549,10 @@ Fixpoint beq_nat (n m : nat) : bool :=
 
 Fixpoint ble_nat (n m : nat) : bool :=
   match n with
-  | O => true
+  | O    => true
   | S n' =>
       match m with
-      | O => false
+      | O    => false
       | S m' => ble_nat n' m'
       end
   end.
@@ -890,7 +890,10 @@ Proof.
   intros.
   destruct b.
   destruct c.
-  reflexivity.                  (* true true *)
+  (* true true *)
+  reflexivity.
+
+  (* true false *)
   Lemma andb_t_f: andb true false = false.
   Proof. reflexivity. Qed.
   Lemma orb_t_f: orb true false = true.
@@ -898,8 +901,11 @@ Proof.
   rewrite -> andb_t_f in H.
   rewrite -> orb_t_f in H.
   rewrite -> H.
-  reflexivity.                  (* true false *)
+  reflexivity.
+
   destruct c.
+
+(* false true *)
   Lemma andb_f_t: andb false true = false.
   Proof. reflexivity. Qed.
   Lemma orb_f_t: orb false true = true.
@@ -907,8 +913,10 @@ Proof.
   rewrite -> andb_f_t in H.
   rewrite -> orb_f_t in H.
   rewrite -> H.
-  reflexivity.                  (* false true *)
-  reflexivity.                  (* false false *)
+  reflexivity.
+
+  (* false false *)
+  reflexivity.
 Qed.
 
 
@@ -970,7 +978,7 @@ Fixpoint bin_to_un (n: bin) : nat :=
   match n with
     | O_bin => O
     | D n'  => plus (bin_to_un n') (bin_to_un n')
-    | DS n'  => plus (S O)  (plus (bin_to_un n') (bin_to_un n'))
+    | DS n' => plus (S O)  (plus (bin_to_un n') (bin_to_un n'))
   end.
 
 Example test_bin_1:
@@ -1026,7 +1034,7 @@ Notation "x * y" := (mult x y)
 
 Fixpoint plus' (n : nat) (m : nat) : nat :=
   match n with
-    | O => m
+    | O    => m
     | S n' => S (plus' n' m)
   end.
 
@@ -1055,9 +1063,9 @@ Fixpoint plus' (n : nat) (m : nat) : nat :=
 (*
 Fixpoint plus'' (n: nat) (m: nat) : nat :=
   match n with
-    | O => m
+    | O    => m
     | S n' => match m with
-                | O => S (plus'' n' m)
+                | O    => S (plus'' n' m)
                 | S m' => S (plus'' n m')
               end
   end.
