@@ -14,10 +14,10 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] binary
     * [x] decreasing
 * [ ] Induction:
-    * [ ] basic_induction
-    * [ ] plus_comm
-    * [ ] mult_comm
-    * [ ] evenb_n__oddb_Sn
+    * [x] basic_induction
+    * [x] plus_comm
+    * [x] mult_comm
+    * [x] evenb_n__oddb_Sn
     * [ ] binary_commute
     * [ ] binary_inverse
 * [ ] Lists:
