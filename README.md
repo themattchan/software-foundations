@@ -1,7 +1,7 @@
-Software Foundations solutions
-==============================
+Software Foundations
+====================
 
-Reading and working through the exercises in [Software Foundations](http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html). This stuff is cool.
+Reading and working through the exercises in [Software Foundations](http://www.cis.upenn.edu/~bcpierce/sf/current/toc.html).
 
 Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_hints.html).
 
@@ -20,13 +20,13 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] evenb_n__oddb_Sn
     * [x] binary_commute
     * [x] binary_inverse
-* [ ] Lists:
+* [x] Lists:
     * [x] bag_functions
     * [x] bag_theorem
-    * [ ] list_exercises
-    * [ ] list_design
-    * [ ] bag_count_sum
-    * [ ] rev_injective
+    * [x] list_exercises
+    * [x] list_design
+    * [x] bag_count_sum
+    * [x] rev_injective
 * [ ] Poly:
     * [ ] split
     * [ ] map_rev
