@@ -447,8 +447,15 @@ Proof. reflexivity.  Qed.
     you haven't learned yet.  Feel free to ask for help if you get
     stuck! *)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem bag_theorem : forall (v: nat) (b: bag),
+    count v (add v b) = 1 + count v b.
+Proof.
+  intros.
+  simpl.
+  rewrite <- beq_nat_refl.
+  reflexivity.
+Qed.
+
 
 (* ###################################################### *)
 (** * Reasoning About Lists *)
@@ -768,13 +775,18 @@ Proof.
 Theorem app_nil_end : forall l : natlist,
   l ++ [] = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-
+  induction l.
+  { simpl. reflexivity. }
+  { simpl. rewrite -> IHl. reflexivity. }
+Qed.
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction l.
+  { reflexivity. }
+  { admit.  }
+Qed.
 
 (** There is a short solution to the next exercise.  If you find
     yourself getting tangled up, step back and try to look for a
@@ -783,19 +795,24 @@ Proof.
 Theorem app_assoc4 : forall l1 l2 l3 l4 : natlist,
   l1 ++ (l2 ++ (l3 ++ l4)) = ((l1 ++ l2) ++ l3) ++ l4.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. repeat rewrite <- app_assoc. reflexivity.
+Qed.
 
 Theorem snoc_append : forall (l:natlist) (n:nat),
   snoc l n = l ++ [n].
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction l.
+  { reflexivity. }
+  { simpl. rewrite <- IHl. reflexivity. }
+Qed.
 
 
 Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
-  (* FILL IN HERE *) Admitted.
-
+  intros. induction l1.
+  { simpl. rewrite -> app_nil_end. reflexivity. }
+  Admitted.
 (** An exercise about your implementation of [nonzeros]: *)
 
 Lemma nonzeros_app : forall l1 l2 : natlist,
@@ -810,20 +827,26 @@ Proof.
     yields [true] for every list [l]. *)
 
 Fixpoint beq_natlist (l1 l2 : natlist) : bool :=
-  (* FILL IN HERE *) admit.
+  match l1, l2 with
+  | [], [] => true
+  | x::xs, y::ys => if beq_nat x y then beq_natlist xs ys else false
+  | _, _ => false
+  end.
 
 Example test_beq_natlist1 :   (beq_natlist nil nil = true).
- (* FILL IN HERE *) Admitted.
+reflexivity.
 Example test_beq_natlist2 :   beq_natlist [1;2;3] [1;2;3] = true.
- (* FILL IN HERE *) Admitted.
+reflexivity.
 Example test_beq_natlist3 :   beq_natlist [1;2;3] [1;2;4] = false.
- (* FILL IN HERE *) Admitted.
+reflexivity.
 
 Theorem beq_natlist_refl : forall l:natlist,
   true = beq_natlist l l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros. induction l.
+  { reflexivity. }
+  { simpl. rewrite <- beq_nat_refl. tauto. }
+Qed.
 
 (* ###################################################### *)
 (** ** List Exercises, Part 2 *)
@@ -836,6 +859,14 @@ Proof.
 
 (* FILL IN HERE *)
 (** [] *)
+Theorem list_design : forall (l: natlist) (a b: nat),
+    a :: l ++ [b] = [a] ++ snoc l b.
+Proof.
+  intros. induction l.
+  { simpl. reflexivity. }
+  { simpl. rewrite -> snoc_append. reflexivity. }
+Qed.
+
 
 (** **** Exercise: 3 stars, advanced (bag_proofs) *)
 (** Here are a couple of little theorems to prove about your
@@ -843,8 +874,7 @@ Proof.
 
 Theorem count_member_nonzero : forall (s : bag),
   ble_nat 1 (count 1 (1 :: s)) = true.
-Proof.
-  (* FILL IN HERE *) Admitted.
+Proof. tauto. Qed.
 
 (** The following lemma about [ble_nat] might help you in the next proof. *)
 
@@ -860,8 +890,12 @@ Proof.
 Theorem remove_decreases_count: forall (s : bag),
   ble_nat (count 0 (remove_one 0 s)) (count 0 s) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros; induction s.
+  { reflexivity. }
+  { simpl. destruct n.
+    { apply ble_n_Sn. }
+    { simpl. assumption. } }
+Qed.
 
 (** **** Exercise: 3 stars, optional (bag_count_sum) *)
 (** Write down an interesting theorem about bags involving the
@@ -878,8 +912,16 @@ Proof.
 There is a hard way and an easy way to solve this exercise.
 *)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem rev_injective : forall (l1 l2 : natlist),
+    rev l1 = rev l2 -> l1 = l2.
+Proof.
+  intros.
+  rewrite <- rev_involutive.
+  rewrite <- H.
+  rewrite rev_involutive.
+  reflexivity.
+Qed.
+
 
 
 (* ###################################################### *)
