@@ -27,11 +27,11 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] list_design
     * [x] bag_count_sum
     * [x] rev_injective
-* [ ] Poly:
-    * [ ] split
-    * [ ] map_rev
-    * [ ] fold_length
-    * [ ] fold_map
+* [x] Poly:
+    * [x] split
+    * [x] map_rev
+    * [x] fold_length
+    * [x] fold_map
 * [ ] MoreCoq:
     * [ ] silly_ex
     * [ ] rev_exercise1

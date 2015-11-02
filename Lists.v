@@ -780,12 +780,20 @@ Proof.
   { simpl. rewrite -> IHl. reflexivity. }
 Qed.
 
+Theorem snoc_rev : forall (l : natlist) (n : nat),
+    rev (snoc l n) = n :: (rev l).
+Proof.
+  intros. induction l. auto.
+  simpl. rewrite IHl. simpl. auto.
+Qed.
+
+
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
   induction l.
   { reflexivity. }
-  { admit.  }
+  { simpl. rewrite snoc_rev. rewrite IHl. auto. }
 Qed.
 
 (** There is a short solution to the next exercise.  If you find
@@ -812,13 +820,23 @@ Theorem distr_rev : forall l1 l2 : natlist,
 Proof.
   intros. induction l1.
   { simpl. rewrite -> app_nil_end. reflexivity. }
-  Admitted.
+  { simpl. rewrite IHl1. rewrite snoc_append.
+    symmetry. rewrite snoc_append.
+    rewrite app_assoc. auto. }
+Qed.
+
+
 (** An exercise about your implementation of [nonzeros]: *)
 
 Lemma nonzeros_app : forall l1 l2 : natlist,
   nonzeros (l1 ++ l2) = (nonzeros l1) ++ (nonzeros l2).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction l1. auto.
+  { destruct n.
+    { auto. }
+    { simpl. rewrite IHl1. auto. } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars (beq_natlist) *)
