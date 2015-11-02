@@ -808,9 +808,16 @@ Proof.
 (** Translate your solution for [plus_comm] into an informal proof. *)
 
 (** Theorem: Addition is commutative.
+    For any a, b:
+        a + b = b + a
 
     Proof: (* FILL IN HERE *)
-[]
+     By induction on a,
+     when a = 0, both sides reduce to b.
+     when a = 1 + a', we have
+       (1+a') + b = b + (1 + a')
+
+    []
 *)
 
 (** **** Exercise: 2 stars, optional (beq_nat_refl_informal) *)
