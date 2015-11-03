@@ -385,7 +385,7 @@ Proof.
       rewrite <- plus_n_Sm in H1.
       inversion H1. apply IHn' in H2.
       auto. } }
-  Qed.
+Qed.
 (* Hint: use the plus_n_Sm lemma *)
 
 
@@ -535,7 +535,15 @@ Proof.
 Theorem beq_nat_true : forall n m,
     beq_nat n m = true -> n = m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n.
+  { intros. destruct m.
+    auto. inversion H. }
+  { intros. destruct m.
+    inversion H. apply f_equal. auto. }
+Qed.
+
+
+
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (beq_nat_true_informal) *)
@@ -709,7 +717,13 @@ Theorem index_after_last: forall (n : nat) (X : Type) (l : list X),
      length l = n ->
      index n l = None.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n X l. generalize dependent n. induction l.
+  { intros; auto. }
+  { intros. destruct n.
+    { inversion H. }
+    { simpl. apply IHl. auto. } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced, optional (index_after_last_informal) *)
@@ -732,7 +746,14 @@ Theorem length_snoc''' : forall (n : nat) (X : Type)
      length l = n ->
      length (snoc l v) = S n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n X v l. generalize dependent n. induction l.
+  { intros; simpl; auto. }
+  { intros n. destruct n.
+    { intros. inversion H. }
+    { simpl. intros. apply f_equal.
+      rewrite <- IHl. auto. auto. } }
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (app_length_cons) *)
