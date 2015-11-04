@@ -764,7 +764,12 @@ Theorem app_length_cons : forall (X : Type) (l1 l2 : list X)
      length (l1 ++ (x :: l2)) = n ->
      S (length (l1 ++ l2)) = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. generalize dependent n. induction l1.
+  { intros; simpl; auto. }
+  { intros n. simpl. intros.
+    rewrite <- H.
+    auto. }
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, optional (app_length_twice) *)
@@ -774,8 +779,15 @@ Theorem app_length_twice : forall (X:Type) (n:nat) (l:list X),
      length l = n ->
      length (l ++ l) = n + n.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros. generalize dependent n. induction l.
+  { destruct n. auto. intros. rewrite <- H. auto. }
+  { destruct n. auto.
+    { simpl. intros. inversion H. }
+    { simpl; intros. apply f_equal.
+      assert (forall a (b:X) c, length (a ++ b :: c) = S (length (a++c))).
+      { intros. induction a. auto. simpl. rewrite <- IHa. auto. }
+      { rewrite H0. rewrite <- plus_n_Sm. auto. } } }
+  Qed.
 
 
 (** **** Exercise: 3 stars, optional (double_induction) *)
@@ -788,7 +800,12 @@ Theorem double_induction: forall (P : nat -> nat -> Prop),
   (forall m n, P m n -> P (S m) (S n)) ->
   forall m n, P m n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  generalize dependent n. induction m.
+  { intro. induction n. auto. auto. }
+  { intro. induction n. auto. auto. }
+Qed.
+
 (** [] *)
 
 
@@ -835,7 +852,9 @@ Proof.
 Theorem override_shadow : forall (X:Type) x1 x2 k1 k2 (f : nat->X),
   (override (override f k1 x2) k1 x1) k2 = (override f k1 x1) k2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold override.
+  destruct (beq_nat k1 k2); try auto.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (combine_split) *)
