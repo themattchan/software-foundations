@@ -536,7 +536,7 @@ Fixpoint optimize_0plus_b (b : bexp) : bexp :=
 Print f_equal
 .
 
-Theorem unapp : forall {A B} (a : A) (b : A)  (f : A -> B),
+Theorem reapp : forall {A B} (a : A) (b : A)  (f : A -> B),
     f a = f b -> a = b.
 Admitted.
 
@@ -546,7 +546,7 @@ Proof.
   intros; f_equal;
   induction b; try auto;
   try unfold optimize_0plus_b; f_equal;
-  repeat try solve [ apply unapp with (f := aeval);
+  repeat try solve [ apply reapp with (f := aeval);
                      apply optimize_0plus_sound'''
                    | auto].
 Qed.
