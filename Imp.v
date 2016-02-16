@@ -523,16 +523,34 @@ Proof.
     function which performs that transformation on [bexp]s, and prove
     it is sound.  Use the tacticals we've just seen to make the proof
     as elegant as possible. *)
-
+Print bexp.
 Fixpoint optimize_0plus_b (b : bexp) : bexp :=
-  (* FILL IN HERE *) admit.
+  match b with
+  | BEq  a1 a2 => BEq (optimize_0plus a1) (optimize_0plus a2)
+  | BLe  a1 a2 => BLe (optimize_0plus a1) (optimize_0plus a2)
+  | BNot b     => BNot (optimize_0plus_b b)
+  | BAnd b1 b2 => BAnd (optimize_0plus_b b1) (optimize_0plus_b b2)
+  | _          => b
+  end.
 
+Print f_equal
+.
+
+Theorem unapp : forall {A B} (a : A) (b : A)  (f : A -> B),
+    f a = f b -> a = b.
+Admitted.
 
 Theorem optimize_0plus_b_sound : forall b,
   beval (optimize_0plus_b b) = beval b.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros; f_equal;
+  induction b; try auto;
+  try unfold optimize_0plus_b; f_equal;
+  repeat try solve [ apply unapp with (f := aeval);
+                     apply optimize_0plus_sound'''
+                   | auto].
+Qed.
+
 
 (** **** Exercise: 4 stars, optional (optimizer) *)
 (** _Design exercise_: The optimization implemented by our
@@ -782,7 +800,7 @@ Proof.
 Qed.
 
 (** Note: if you're reading the HTML file, you'll see an empty square box instead
-of a proof for this theorem.  
+of a proof for this theorem.
 You can click on this box to "unfold" the text to see the proof.
 Click on the unfolded to text to "fold" it back up to a box. We'll be using
 this style frequently from now on to help keep the HTML easier to read.
@@ -808,7 +826,7 @@ Qed.
 (** Write a relation [bevalR] in the same style as
     [aevalR], and prove that it is equivalent to [beval].*)
 
-(* 
+(*
 Inductive bevalR:
 (* FILL IN HERE *)
 *)
@@ -917,7 +935,7 @@ End aevalR_extended.
     actually in [SfLib], but we want to repeat them here so that we
     can explain them.) *)
 
-Module Id. 
+Module Id.
 
 (** We define a new inductive datatype [Id] so that we won't confuse
     identifiers and numbers.  We use [sumbool] to define a computable
@@ -935,30 +953,30 @@ Proof.
      left. rewrite Heq. reflexivity.
    Case "n1 <> n2".
      right. intros contra. inversion contra. apply Hneq. apply H0.
-Defined. 
+Defined.
 
 
 (** The following lemmas will be useful for rewriting terms involving [eq_id_dec]. *)
 
-Lemma eq_id : forall (T:Type) x (p q:T), 
-              (if eq_id_dec x x then p else q) = p. 
+Lemma eq_id : forall (T:Type) x (p q:T),
+              (if eq_id_dec x x then p else q) = p.
 Proof.
-  intros. 
-  destruct (eq_id_dec x x). 
-  Case "x = x". 
+  intros.
+  destruct (eq_id_dec x x).
+  Case "x = x".
     reflexivity.
-  Case "x <> x (impossible)". 
+  Case "x <> x (impossible)".
     apply ex_falso_quodlibet; apply n; reflexivity. Qed.
 
 (** **** Exercise: 1 star, optional (neq_id) *)
-Lemma neq_id : forall (T:Type) x y (p q:T), x <> y -> 
-               (if eq_id_dec x y then p else q) = q. 
+Lemma neq_id : forall (T:Type) x y (p q:T), x <> y ->
+               (if eq_id_dec x y then p else q) = q.
 Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
 
-End Id. 
+End Id.
 
 (* ####################################################### *)
 (** ** States *)
@@ -967,12 +985,12 @@ End Id.
     some point in the execution of a program. *)
 (** For simplicity (to avoid dealing with partial functions), we
     let the state be defined for _all_ variables, even though any
-    given program is only going to mention a finite number of them. 
+    given program is only going to mention a finite number of them.
     The state captures all of the information stored in memory.  For Imp
     programs, because each variable stores only a natural number, we
-    can represent the state as a mapping from identifiers to [nat].  
-    For more complex programming languages, the state might have more 
-    structure.  
+    can represent the state as a mapping from identifiers to [nat].
+    For more complex programming languages, the state might have more
+    structure.
 *)
 
 Definition state := id -> nat.
@@ -995,7 +1013,7 @@ Proof.
 
 (** **** Exercise: 1 star (update_neq) *)
 Theorem update_neq : forall x2 x1 n st,
-  x2 <> x1 ->                        
+  x2 <> x1 ->
   (update st x2 n) x1 = (st x1).
 Proof.
   (* FILL IN HERE *) Admitted.
@@ -1028,7 +1046,7 @@ Proof.
 
 (** **** Exercise: 3 stars (update_permute) *)
 Theorem update_permute : forall n1 n2 x1 x2 x3 st,
-  x2 <> x1 -> 
+  x2 <> x1 ->
   (update (update st x2 n1) x1 n2) x3 = (update (update st x1 n2) x2 n1) x3.
 Proof.
   (* FILL IN HERE *) Admitted.
@@ -1133,7 +1151,7 @@ Proof. reflexivity. Qed.
          | c ;; c
          | WHILE b DO c END
          | IFB b THEN c ELSE c FI
-]] 
+]]
 *)
 (**
     For example, here's the factorial function in Imp.
@@ -1309,7 +1327,7 @@ Fixpoint ceval_fun_no_while (st : state) (c : com) : state :=
     pronounced "[c] takes state [st] to [st']".
 
 *)
-(** *** Operational Semantics 
+(** *** Operational Semantics
                            ----------------                            (E_Skip)
                            SKIP / st || st
 
@@ -1654,7 +1672,7 @@ Fixpoint s_compile (e : aexp) : list sinstr :=
 (** After you've defined [s_compile], uncomment the following to test
     that it works. *)
 
-(* 
+(*
 Example s_compile1 :
     s_compile (AMinus (AId X) (AMult (ANum 2) (AId Y)))
   = [SLoad X; SPush 2; SLoad Y; SMult; SMinus].
@@ -1887,4 +1905,3 @@ End BreakImp.
 
 
 (* <$Date: 2014-02-22 09:43:41 -0500 (Sat, 22 Feb 2014) $ *)
-
