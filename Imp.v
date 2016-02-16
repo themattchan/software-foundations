@@ -533,9 +533,8 @@ Fixpoint optimize_0plus_b (b : bexp) : bexp :=
   | _          => b
   end.
 
-Print f_equal
-.
 
+(* is this provable?? *)
 Theorem reapp : forall {A B} (a : A) (b : A)  (f : A -> B),
     f a = f b -> a = b.
 Admitted.
