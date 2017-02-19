@@ -163,13 +163,13 @@ Inductive grumble (X:Type) : Type :=
 
 (** Which of the following are well-typed elements of [grumble X] for
     some type [X]?
-      - [d (b a 5)]
-      - [d mumble (b a 5)]
-      - [d bool (b a 5)]
-      - [e bool true]
-      - [e mumble (b c 0)]
-      - [e bool (b c 0)]
-      - [c]
+      - [d (b a 5)]             (* YES *)
+      - [d mumble (b a 5)]      (* NO *)
+      - [d bool (b a 5)]        (* NO *)
+      - [e bool true]           (* NO *)
+      - [e mumble (b c 0)]      (* NO *)
+      - [e bool (b c 0)]        (* NO *)
+      - [c]                     (* NO *)
 (* FILL IN HERE *)
 
 [] *)
@@ -184,6 +184,9 @@ Inductive baz : Type :=
 
 (** How _many_ elements does the type [baz] have?
 (* FILL IN HERE *)
+
+infinite
+
 [] *)
 
 End MumbleBaz.
@@ -1133,12 +1136,9 @@ Theorem fold_map_sound :
   forall (X Y : Type) (f : X -> Y) (xs : list X),
     fold_map f xs = map f xs.
 Proof.
-  intros. induction xs.
-  auto.
-  unfold fold_map in *.
-  simpl.
-  rewrite IHxs.
-  auto.
+  intros; induction xs; auto.
+  unfold fold_map in *; simpl.
+  rewrite IHxs; auto.
 Qed.
 
 (* FILL IN HERE *)

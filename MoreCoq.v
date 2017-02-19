@@ -112,7 +112,7 @@ Proof.
   intros. rewrite H. symmetry. apply rev_involutive. Qed.
   (** [] *)
 
-(** **** Exercise: 1 star, optional (apply_rewrite) *)
+(** **** EXERCISE: 1 STAR, OPTIONAL (APPLY_REWRITE) *)
 (** Briefly explain the difference between the tactics [apply] and
     [rewrite].  Are there situations where both can usefully be
     applied?
@@ -384,7 +384,8 @@ Proof.
       rewrite <- plus_n_Sm in H1.
       rewrite <- plus_n_Sm in H1.
       inversion H1. apply IHn' in H2.
-      auto. } }
+      rewrite <- H2.
+      reflexivity. } }
 Qed.
 (* Hint: use the plus_n_Sm lemma *)
 

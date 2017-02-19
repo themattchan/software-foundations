@@ -33,7 +33,7 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] fold_length
     * [x] fold_map
 * [ ] MoreCoq:
-    * [ ] silly_ex
+    * [x] silly_ex
     * [ ] rev_exercise1
     * [ ] beq_nat_0_l.
     * [ ] plus_n_n_injective
