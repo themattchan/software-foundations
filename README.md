@@ -32,19 +32,19 @@ Roughly following these [suggested exercises](http://web.cecs.pdx.edu/~apt/coq_h
     * [x] map_rev
     * [x] fold_length
     * [x] fold_map
-* [ ] MoreCoq:
+* [x] MoreCoq:
     * [x] silly_ex
-    * [ ] rev_exercise1
-    * [ ] beq_nat_0_l.
-    * [ ] plus_n_n_injective
-    * [ ] beq_nat_true
-    * [ ] gen_dep_practice
-    * [ ] combine_split
+    * [x] rev_exercise1
+    * [x] beq_nat_0_l.
+    * [x] plus_n_n_injective
+    * [x] beq_nat_true
+    * [x] gen_dep_practice
+    * [x] combine_split
     * [ ] override_same
-    * [ ] destruct_eqn_practice
-    * [ ] beq_nat_sym
-    * [ ] beq_nat_trans
-    * [ ] split_combine
+    * [x] destruct_eqn_practice
+    * [x] beq_nat_sym
+    * [x] beq_nat_trans
+    * [x] split_combine
     * [ ] override_permute
 * [ ] Prop:
     * [ ] gorgeous_sum

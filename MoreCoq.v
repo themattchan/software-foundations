@@ -939,27 +939,12 @@ Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool),
   f (f (f b)) = f b.
 Proof.
-  intros f b. destruct b.
-  { destruct (f true) eqn:ft.
-    { rewrite ft; auto. }
-    { destruct (f false) eqn:ff.
-      { rewrite ft; auto. }
-      { rewrite ff; auto. } } }
-  { destruct (f false) eqn:ff.
-    {  destruct (f true) eqn:ft.
-       { rewrite ft; auto. }
-       {
-        { auto. }
-    { auto. }
-    }
-  { destruct (f false) eqn:ff.
-    {  admit.
-    } {  rewrite ff; auto.}
-      }
-
-
-
-(** [] *)
+  intros f b;
+    destruct b;
+    destruct (f true) eqn:ft;
+    destruct (f false) eqn:ff;
+    try (rewrite ft); try (rewrite ff); auto.
+Qed.
 
 
 (** **** Exercise: 2 stars (override_same) *)
@@ -967,8 +952,17 @@ Theorem override_same : forall (X:Type) x1 k1 k2 (f : nat->X),
   f k1 = x1 ->
   (override f k1 x1) k2 = f k2.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros.
+  unfold override.
+  remember (beq_nat k1 k2).
+  destruct b.
+  { rewrite <- H.
+    symmetry in Heqb.
+    apply beq_nat_true in Heqb.
+    rewrite Heqb.
+    reflexivity. }
+  reflexivity.
+Qed.
 
 (* ################################################################## *)
 (** * Review *)
@@ -1052,7 +1046,13 @@ Proof.
 Theorem beq_nat_sym : forall (n m : nat),
   beq_nat n m = beq_nat m n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n.
+  induction n.
+  destruct m; auto.
+  destruct m; auto.
+  simpl; auto.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced, optional (beq_nat_sym_informal) *)
@@ -1072,8 +1072,13 @@ Theorem beq_nat_trans : forall n m p,
   beq_nat m p = true ->
   beq_nat n p = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intro n. intro m.
+  intros.
+  rewrite <- H.
+  apply beq_nat_true in H0.
+  rewrite H0.
+  reflexivity.
+Qed.
 
 (** **** Exercise: 3 stars, advanced (split_combine) *)
 (** We have just proven that for all lists of pairs, [combine] is the
@@ -1088,20 +1093,29 @@ Proof.
     and [l2] for [split] [combine l1 l2 = (l1,l2)] to be true?)  *)
 
 Definition split_combine_statement : Prop :=
-(* FILL IN HERE *) admit.
+  forall (X: Type) (Y:Type) (xs : list X) (ys : list Y),
+    (length xs = length ys) -> split (combine xs ys) = (xs, ys).
 
 Theorem split_combine : split_combine_statement.
 Proof.
-(* FILL IN HERE *) Admitted.
-
-
-(** [] *)
+  unfold split_combine_statement.
+  intros X Y xs.
+  induction xs.
+  { simpl.intros. destruct ys. auto. inversion H. }
+  { intros. simpl in H. destruct ys.
+    { simpl. inversion H. }
+    { simpl in H. inversion H.
+      apply IHxs in H1.
+      simpl. rewrite H1.
+      reflexivity. } }
+  Qed.
 
 (** **** Exercise: 3 stars (override_permute) *)
 Theorem override_permute : forall (X:Type) x1 x2 k1 k2 k3 (f : nat->X),
   beq_nat k2 k1 = false ->
   (override (override f k2 x2) k1 x1) k3 = (override (override f k1 x1) k2 x2) k3.
 Proof.
+
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
