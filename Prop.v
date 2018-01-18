@@ -1,8 +1,8 @@
 (** * Prop: Propositions and Evidence *)
 
 Require Export Logic.
-
-
+Require Import Basics.
+Require Import Induction.
 
 (* ####################################################### *)
 (** * From Boolean Functions to Propositions *)
@@ -12,11 +12,11 @@ Require Export Logic.
     function to define the _proposition_ that some number [n] is
     even: *)
 
-Definition even (n:nat) : Prop := 
+Definition even (n:nat) : Prop :=
   evenb n = true.
 
 (** That is, we can define "[n] is even" to mean "the function [evenb]
-    returns [true] when applied to [n]."  
+    returns [true] when applied to [n]."
 
     Note that here we have given a name
     to a proposition using a [Definition], just as we have
@@ -47,8 +47,14 @@ Inductive ev : nat -> Prop :=
 Theorem double_even : forall n,
   ev (double n).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros.
+  induction n.
+  compute.
+  apply ev_0.
+  compute.
+  apply ev_SS.
+  apply IHn.
+Qed.
 
 
 (** *** Discussion: Computational vs. Inductive Definitions *)
@@ -62,7 +68,7 @@ Proof.
 
     However, for many other properties of interest, the direct
     inductive definition is preferable, since writing a testing
-    function may be awkward or even impossible.  
+    function may be awkward or even impossible.
 
     One such property is [beautiful].  This is a perfectly sensible
     definition of a set of numbers, but we cannot translate its
@@ -90,16 +96,26 @@ Theorem ev__even : forall n,
   ev n -> even n.
 Proof.
   intros n E. induction E as [| n' E'].
-  Case "E = ev_0". 
+  Case "E = ev_0".
     unfold even. reflexivity.
-  Case "E = ev_SS n' E'".  
-    unfold even. apply IHE'.  
+  Case "E = ev_SS n' E'".
+    unfold even. apply IHE'.
 Qed.
 
 (** Could this proof also be carried out by induction on [n] instead
     of [E]?  If not, why not? *)
 
-(* FILL IN HERE *)
+Goal forall n, ev n -> even n.
+Proof.
+  intros n E.
+  induction n.
+  unfold even. reflexivity.
+  unfold even.  rewrite <-  IHn.
+  Abort.
+
+
+
+ (* FILL IN HERE *)
 (** [] *)
 
 (** The induction principle for inductively defined propositions does
@@ -131,7 +147,7 @@ Qed.
 
 Theorem ev_sum : forall n m,
    ev n -> ev m -> ev (n+m).
-Proof. 
+Proof.
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
@@ -144,14 +160,14 @@ Proof.
     "[beautiful]." *)
 
 (** Informally, a number is [beautiful] if it is [0], [3], [5], or the
-    sum of two [beautiful] numbers.  
+    sum of two [beautiful] numbers.
 
     More pedantically, we can define [beautiful] numbers by giving four
     rules:
 
        - Rule [b_0]: The number [0] is [beautiful].
-       - Rule [b_3]: The number [3] is [beautiful]. 
-       - Rule [b_5]: The number [5] is [beautiful]. 
+       - Rule [b_3]: The number [3] is [beautiful].
+       - Rule [b_5]: The number [5] is [beautiful].
        - Rule [b_sum]: If [n] and [m] are both [beautiful], then so is
          their sum. *)
 (** ** Inference Rules *)
@@ -162,16 +178,16 @@ Proof.
 (**
                               -----------                               (b_0)
                               beautiful 0
-                              
+
                               ------------                              (b_3)
                               beautiful 3
 
                               ------------                              (b_5)
-                              beautiful 5    
+                              beautiful 5
 
                        beautiful n     beautiful m
                        ---------------------------                      (b_sum)
-                              beautiful (n+m)   
+                              beautiful (n+m)
 *)
 
 (** *** *)
@@ -197,16 +213,16 @@ Proof.
          ----------- (b_3)   ----------- (b_5)
          beautiful 3         beautiful 5
          ------------------------------- (b_sum)
-                   beautiful 8   
+                   beautiful 8
 *)
 (** *** *)
-(** 
+(**
     Of course, there are other ways of using these rules to argue that
     [8] is [beautiful], for instance:
          ----------- (b_5)   ----------- (b_3)
          beautiful 5         beautiful 3
          ------------------------------- (b_sum)
-                   beautiful 8   
+                   beautiful 8
 *)
 
 (** **** Exercise: 1 star (varieties_of_beauty) *)
@@ -234,10 +250,10 @@ Inductive beautiful : nat -> Prop :=
     embodies one of the rules for [beautiful] numbers.
 *)
 (** *** *)
-(** 
-    The rules introduced this way have the same status as proven 
-    theorems; that is, they are true axiomatically. 
-    So we can use Coq's [apply] tactic with the rule names to prove 
+(**
+    The rules introduced this way have the same status as proven
+    theorems; that is, they are true axiomatically.
+    So we can use Coq's [apply] tactic with the rule names to prove
     that particular numbers are [beautiful].  *)
 
 Theorem three_is_beautiful: beautiful 3.
@@ -299,13 +315,13 @@ Proof.
     [beautiful n], then we know that [E] must have one of four shapes:
 
       - [E] is [b_0] (and [n] is [O]),
-      - [E] is [b_3] (and [n] is [3]), 
-      - [E] is [b_5] (and [n] is [5]), or 
+      - [E] is [b_3] (and [n] is [3]),
+      - [E] is [b_5] (and [n] is [5]), or
       - [E] is [b_sum n1 n2 E1 E2] (and [n] is [n1+n2], where [E1] is
         evidence that [n1] is beautiful and [E2] is evidence that [n2]
         is beautiful). *)
 
-(** *** *)    
+(** *** *)
 (** This permits us to _analyze_ any hypothesis of the form [beautiful
     n] to see how it was constructed, using the tactics we already
     know.  In particular, we can use the [induction] tactic that we
@@ -322,14 +338,14 @@ Inductive gorgeous : nat -> Prop :=
 (** **** Exercise: 1 star (gorgeous_tree) *)
 (** Write out the definition of [gorgeous] numbers using inference rule
     notation.
- 
+
 (* FILL IN HERE *)
 []
 *)
 
 
 (** **** Exercise: 1 star (gorgeous_plus13) *)
-Theorem gorgeous_plus13: forall n, 
+Theorem gorgeous_plus13: forall n,
   gorgeous n -> gorgeous (13+n).
 Proof.
    (* FILL IN HERE *) Admitted.
@@ -341,26 +357,26 @@ Proof.
     actually the same property in the sense that they are true of the
     same numbers.  Indeed, we can prove this. *)
 
-Theorem gorgeous__beautiful : forall n, 
+Theorem gorgeous__beautiful : forall n,
   gorgeous n -> beautiful n.
 Proof.
    intros n H.
    induction H as [|n'|n'].
    Case "g_0".
        apply b_0.
-   Case "g_plus3". 
+   Case "g_plus3".
        apply b_sum. apply b_3.
        apply IHgorgeous.
    Case "g_plus5".
-       apply b_sum. apply b_5. apply IHgorgeous. 
+       apply b_sum. apply b_5. apply IHgorgeous.
 Qed.
 
-(** Notice that the argument proceeds by induction on the _evidence_ [H]! *) 
+(** Notice that the argument proceeds by induction on the _evidence_ [H]! *)
 
 (** Let's see what happens if we try to prove this by induction on [n]
    instead of induction on the evidence [H]. *)
 
-Theorem gorgeous__beautiful_FAILED : forall n, 
+Theorem gorgeous__beautiful_FAILED : forall n,
   gorgeous n -> beautiful n.
 Proof.
    intros. induction n as [| n'].
@@ -402,7 +418,7 @@ Proof.
 
 Theorem g_times2: forall n, gorgeous n -> gorgeous (2*n).
 Proof.
-   intros n H. simpl. 
+   intros n H. simpl.
    induction H.
    (* FILL IN HERE *) Admitted.
 (** [] *)
@@ -419,11 +435,11 @@ Proof.
     right tactic turns out to be [inversion].  *)
 
 Theorem ev_minus2: forall n,
-  ev n -> ev (pred (pred n)). 
+  ev n -> ev (pred (pred n)).
 Proof.
   intros n E.
   inversion E as [| n' E'].
-  Case "E = ev_0". simpl. apply ev_0. 
+  Case "E = ev_0". simpl. apply ev_0.
   Case "E = ev_SS n' E'". simpl. apply E'.  Qed.
 
 (** **** Exercise: 1 star, optional (ev_minus2_n) *)
@@ -439,8 +455,8 @@ the relevant cases. *)
 Theorem SSev__even : forall n,
   ev (S (S n)) -> ev n.
 Proof.
-  intros n E. 
-  inversion E as [| n' E']. 
+  intros n E.
+  inversion E as [| n' E'].
   apply E'. Qed.
 
 (** ** [inversion] revisited *)
@@ -453,9 +469,9 @@ Proof.
     for inductively defined propositions.
 
     (You might also expect that [destruct] would be a more suitable
-    tactic to use here. Indeed, it is possible to use [destruct], but 
+    tactic to use here. Indeed, it is possible to use [destruct], but
     it often throws away useful information, and the [eqn:] qualifier
-    doesn't help much in this case.)    
+    doesn't help much in this case.)
 
     Here's how [inversion] works in general.  Suppose the name
     [I] refers to an assumption [P] in the current context, where
@@ -486,7 +502,7 @@ Proof.
 (** The [inversion] tactic can also be used to derive goals by showing
     the absurdity of a hypothesis. *)
 
-Theorem even5_nonsense : 
+Theorem even5_nonsense :
   ev 5 -> 2 + 2 = 9.
 Proof.
   (* FILL IN HERE *) Admitted.
@@ -530,10 +546,10 @@ Proof.
       of the list; just having a single constructor
     c : forall l, l = rev l -> pal l
       may seem obvious, but will not work very well.)
- 
-    - Prove that 
+
+    - Prove that
        forall l, pal (l ++ rev l).
-    - Prove that 
+    - Prove that
        forall l, pal l -> l = rev l.
 *)
 
@@ -570,7 +586,7 @@ Proof.
       three cases.)
 
     - Prove that subsequence is reflexive, that is, any list is a
-      subsequence of itself.  
+      subsequence of itself.
 
     - Prove that for any lists [l1], [l2], and [l3], if [l1] is a
       subsequence of [l2], then [l1] is also a subsequence of [l2 ++
@@ -612,7 +628,7 @@ Proof.
     thought of as a _relation_ -- i.e., it defines a set of pairs for
     which the proposition is provable. *)
 
-Module LeModule.  
+Module LeModule.
 
 
 (** One useful example is the "less than or equal to"
@@ -660,7 +676,7 @@ Proof.
 
 Theorem test_le3 :
   (2 <= 1) -> 2 + 2 = 5.
-Proof. 
+Proof.
   (* WORKED IN CLASS *)
   intros H. inversion H. inversion H2.  Qed.
 
@@ -716,26 +732,26 @@ Proof.
 
 Theorem n_le_m__Sn_le_Sm : forall n m,
   n <= m -> S n <= S m.
-Proof. 
+Proof.
   (* FILL IN HERE *) Admitted.
 
 
 Theorem Sn_le_Sm__n_le_m : forall n m,
   S n <= S m -> n <= m.
-Proof. 
+Proof.
   (* FILL IN HERE *) Admitted.
 
 
 Theorem le_plus_l : forall a b,
   a <= a + b.
-Proof. 
+Proof.
   (* FILL IN HERE *) Admitted.
 
 Theorem plus_lt : forall n1 n2 m,
   n1 + n2 < m ->
   n1 < m /\ n2 < m.
-Proof. 
- unfold lt. 
+Proof.
+ unfold lt.
  (* FILL IN HERE *) Admitted.
 
 Theorem lt_S : forall n m,
@@ -746,7 +762,7 @@ Proof.
 
 Theorem ble_nat_true : forall n m,
   ble_nat n m = true -> n <= m.
-Proof. 
+Proof.
   (* FILL IN HERE *) Admitted.
 
 Theorem le_ble_nat : forall n m,
@@ -757,7 +773,7 @@ Proof.
   (* FILL IN HERE *) Admitted.
 
 Theorem ble_nat_true_trans : forall n m o,
-  ble_nat n m = true -> ble_nat m o = true -> ble_nat n o = true.                               
+  ble_nat n m = true -> ble_nat m o = true -> ble_nat n o = true.
 Proof.
   (* Hint: This theorem can be easily proved without using [induction]. *)
   (* FILL IN HERE *) Admitted.
@@ -777,7 +793,7 @@ Module R.
     consider the following three-place relation on numbers: *)
 
 Inductive R : nat -> nat -> nat -> Prop :=
-   | c1 : R 0 0 0 
+   | c1 : R 0 0 0
    | c2 : forall m n o, R m n o -> R (S m) n (S o)
    | c3 : forall m n o, R m n o -> R m (S n) (S o)
    | c4 : forall m n o, R (S m) (S n) (S (S o)) -> R m n o
@@ -790,7 +806,7 @@ Inductive R : nat -> nat -> nat -> Prop :=
     - If we dropped constructor [c5] from the definition of [R],
       would the set of provable propositions change?  Briefly (1
       sentence) explain your answer.
-  
+
     - If we dropped constructor [c4] from the definition of [R],
       would the set of provable propositions change?  Briefly (1
       sentence) explain your answer.
@@ -799,9 +815,9 @@ Inductive R : nat -> nat -> nat -> Prop :=
 []
 *)
 
-(** **** Exercise: 3 stars, optional (R_fact) *)  
+(** **** Exercise: 3 stars, optional (R_fact) *)
 (** Relation [R] actually encodes a familiar function.  State and prove two
-    theorems that formally connects the relation and the function. 
+    theorems that formally connects the relation and the function.
     That is, if [R m n o] is true, what can we say about [m],
     [n], and [o], and vice versa?
 *)
@@ -846,7 +862,7 @@ Check (beautiful 4).
 (** We've mainly seen one place that propositions can appear in Coq: in
     [Theorem] (and [Lemma] and [Example]) declarations. *)
 
-Theorem plus_2_2_is_4 : 
+Theorem plus_2_2_is_4 :
   2 + 2 = 4.
 Proof. reflexivity.  Qed.
 
@@ -861,12 +877,12 @@ Check plus_fact.
 (** We can later use this name in any situation where a proposition is
     expected -- for example, as the claim in a [Theorem] declaration. *)
 
-Theorem plus_fact_is_true : 
+Theorem plus_fact_is_true :
   plus_fact.
 Proof. reflexivity.  Qed.
 
 (** *** *)
-(** We've seen several ways of constructing propositions.  
+(** We've seen several ways of constructing propositions.
 
        - We can define a new proposition primitively using [Inductive].
 
@@ -884,7 +900,7 @@ Check (even 4).
 (* ===> even 4 : Prop *)
 Check (even 3).
 (* ===> even 3 : Prop *)
-Check even. 
+Check even.
 (* ===> even : nat -> Prop *)
 
 (** *** *)
@@ -912,7 +928,7 @@ Definition true_for_zero (P:nat->Prop) : Prop :=
 
 (** *** *)
 (** Here are two more examples of passing parameterized propositions
-    as arguments to a function.  
+    as arguments to a function.
 
     The first function, [true_for_all_numbers], takes a proposition
     [P] as argument and builds the proposition that [P] is true for
@@ -936,8 +952,8 @@ a proposition stating that induction is valid for natural numbers: *)
 Definition natural_number_induction_valid : Prop :=
   forall (P:nat->Prop),
     true_for_zero P ->
-    preserved_by_S P -> 
-    true_for_all_numbers P. 
+    preserved_by_S P ->
+    true_for_all_numbers P.
 
 
 
@@ -956,7 +972,7 @@ Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop :=
 (** To test your definition, see whether you can prove the following
     facts: *)
 
-Theorem combine_odd_even_intro : 
+Theorem combine_odd_even_intro :
   forall (Podd Peven : nat -> Prop) (n : nat),
     (oddb n = true -> Podd n) ->
     (oddb n = false -> Peven n) ->
@@ -995,7 +1011,7 @@ Proof.
     [true_upto_n__true_everywhere] that makes
     [true_upto_n_example] work. *)
 
-(* 
+(*
 Fixpoint true_upto_n__true_everywhere
 (* FILL IN HERE *)
 
@@ -1008,5 +1024,3 @@ Proof. reflexivity.  Qed.
 
 
 (* $Date: 2014-06-05 07:22:21 -0400 (Thu, 05 Jun 2014) $ *)
-
-
