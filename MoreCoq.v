@@ -67,7 +67,7 @@ Theorem silly_ex :
      evenb 3 = true ->
      oddb 4 = true.
 Proof.
-  intros.  apply H. auto. Qed.
+  intros.  apply H. apply H0. Qed.
 
   (** [] *)
 
@@ -175,7 +175,7 @@ Example trans_eq_exercise : forall (n m o p : nat),
      m = (minustwo o) ->
      (n + p) = m ->
      (n + p) = (minustwo o).
-Proof. intros. rewrite H in H0. auto. Qed.
+Proof. intros. rewrite H in H0. apply H0. Qed.
 
 (** [] *)
 
@@ -865,8 +865,13 @@ Theorem combine_split : forall X Y (l : list (X * Y)) l1 l2,
   split l = (l1, l2) ->
   combine l1 l2 = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X Y l. induction l as [| [x y] xs ].
+  { intros. inversion H. auto. }
+  { simpl. destruct (split xs) as (l1,l2).
+    intros. inversion H. simpl.
+    rewrite  IHxs.
+    auto. auto. }
+Qed.
 
 (** Sometimes, doing a [destruct] on a compound expression (a
     non-variable) will erase information we need to complete a proof. *)
@@ -934,8 +939,28 @@ Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool),
   f (f (f b)) = f b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros f b. destruct b.
+  { destruct (f true) eqn:ft.
+    { rewrite ft; auto. }
+    { destruct (f false) eqn:ff.
+      { rewrite ft; auto. }
+      { rewrite ff; auto. } } }
+  { destruct (f false) eqn:ff.
+    {  destruct (f true) eqn:ft.
+       { rewrite ft; auto. }
+       {
+        { auto. }
+    { auto. }
+    }
+  { destruct (f false) eqn:ff.
+    {  admit.
+    } {  rewrite ff; auto.}
+      }
+
+
+
 (** [] *)
+
 
 (** **** Exercise: 2 stars (override_same) *)
 Theorem override_same : forall (X:Type) x1 k1 k2 (f : nat->X),
